@@ -1,5 +1,4 @@
 from pathlib import Path
-
 from pymol import cmd
 
 
@@ -28,6 +27,11 @@ def merge_mols(path_str):
         for file in path.iterdir():
             if file.suffix == ".mol2" and file.stem != outname:
                 copy_to_file(file, wf)
+
+    # convert to sdf file
+    cmd.load(str(output_file), object=outname)
+    cmd.save(str(path / (outname + ".sdf")), outname, 0)
+    cmd.remove(outname)
 
     print("Success! File saved to:", output_file)
 
